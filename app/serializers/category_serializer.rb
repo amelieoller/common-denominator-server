@@ -1,7 +1,4 @@
-class CategorySerializer
-  include FastJsonapi::ObjectSerializer
-  set_key_transform :camel_lower
-
-  attributes :title
+class CategorySerializer < ActiveModel::Serializer
+  attributes :id, :title
   has_many :items
 end

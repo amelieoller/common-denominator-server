@@ -1,7 +1,4 @@
-class UserSerializer
-  include FastJsonapi::ObjectSerializer
-  set_key_transform :camel_lower
-
-  attributes :username
+class UserSerializer < ActiveModel::Serializer
+  attributes :id, :username
   has_many :friends
 end

@@ -23,5 +23,5 @@ Category.create(title: "Indoor Activities", user: j)
 end
 
 30.times do
-  Rating.create(user: User.all.sample, item: Item.all.sample)
+  Rating.create(user: User.all.sample, item: Item.all.sample, value: rand(0..10))
 end

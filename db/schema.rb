@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2020_08_30_004747) do
   create_table "ratings", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "item_id", null: false
+    t.integer "value", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["item_id"], name: "index_ratings_on_item_id"
