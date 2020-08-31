@@ -2,9 +2,14 @@ class Api::V1::ItemsController < ApplicationController
   before_action :find_item, only: [:update, :destroy]
 
   def index
-    items = Item.where(category_id: params[:category_id])
+    slug = params[:category_id].parameterize
+    category = Category.where("lower(slug) = ? and user_id = ?", slug, User.first.id).take
 
-    render json: items
+    if category && category.items
+      render json: category.items
+    else
+      render json: { "errors": ["No items found"] }
+    end
   end
 
   def create
@@ -23,7 +28,7 @@ class Api::V1::ItemsController < ApplicationController
 
   def destroy
     if @item.destroy
-      render json: { "message": "Successfully remove item" }
+      render json: { "message": "Successfully removed item" }
     else
       render json: { "message": "Could not remove item, please try again" }
     end

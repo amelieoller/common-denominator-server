@@ -4,11 +4,10 @@ Rails.application.routes.draw do
       resources :user_friends
       resources :users
       resources :friendships
+      resources :ratings
 
       resources :categories do
-        resources :items do
-          resources :ratings
-        end
+        resources :items
       end
     end
   end

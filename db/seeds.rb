@@ -11,12 +11,11 @@ j = User.create(username: "Jeff", password: "common")
 
 f = Friendship.create(user: a, friend: j)
 
-Category.create(title: "Meals", user: j, friendship: f)
-Category.create(title: "Movies", user: a, friendship: f)
-Category.create(title: "Outdoor Activities", user: a)
-Category.create(title: "Restaurants", user: a)
-Category.create(title: "Games", user: j)
-Category.create(title: "Indoor Activities", user: j)
+categories = ["Meals", "Movies", "Games", "Indoor Activities"]
+
+categories.each do |category|
+  Category.create(title: category, user: a, friendship: f)
+end
 
 30.times do
   Item.create(title: Faker::Movie.title, category: Category.all.sample)

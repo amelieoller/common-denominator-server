@@ -8,16 +8,20 @@ class Api::V1::CategoriesController < ApplicationController
   def create
     category = Category.create(category_params)
 
-    render json: category
+    if category.valid?
+      render json: category
+    else
+      render json: { "errors": category.errors.full_messages }
+    end
   end
 
   def destroy
     category = Category.find(params[:id])
 
     if category.destroy
-      render json: { "message": "Successfully remove category" }
+      render json: { "message": "Successfully removed category" }
     else
-      render json: { "message": "Could not remove category, please try again" }
+      render json: { "errors": ["Could not remove category, please try again"] }
     end
   end
 

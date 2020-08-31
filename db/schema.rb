@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2020_08_30_004747) do
 
   create_table "categories", force: :cascade do |t|
     t.string "title"
+    t.string "slug"
     t.bigint "user_id", null: false
     t.bigint "friendship_id"
     t.datetime "created_at", precision: 6, null: false
