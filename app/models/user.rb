@@ -9,4 +9,10 @@ class User < ApplicationRecord
 
   validates :password, presence: true, length: { minimum: 6 }
   validates :username, { presence: true, uniqueness: true }
+
+  before_create :add_slug
+
+  def add_slug
+    self.slug = self.username.parameterize
+  end
 end

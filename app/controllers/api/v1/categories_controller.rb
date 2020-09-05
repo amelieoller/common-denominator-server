@@ -1,14 +1,20 @@
+require "benchmark"
+
 class Api::V1::CategoriesController < ApplicationController
   def index
-    categories = Category.all
+    categories = current_user.categories
 
-    render json: categories
+    if categories
+      render json: categories
+    else
+      render json: { "errors": "There was a problem fetching categories" }
+    end
   end
 
   def create
-    category = Category.create(category_params)
+    category = current_user.categories.build(category_params)
 
-    if category.valid?
+    if category.save
       render json: category
     else
       render json: { "errors": category.errors.full_messages }
@@ -16,7 +22,7 @@ class Api::V1::CategoriesController < ApplicationController
   end
 
   def destroy
-    category = Category.find(params[:id])
+    category = current_user.categories.find(params[:id])
 
     if category.destroy
       render json: { "message": "Successfully removed category" }
@@ -28,6 +34,21 @@ class Api::V1::CategoriesController < ApplicationController
   private
 
   def category_params
-    params.require(:category).permit(:title, :user_id)
+    params.require(:category).permit(:title)
   end
 end
+
+# puts "----------------------------------"
+# puts Benchmark.measure {
+#   puts "***********************"
+#   category = current_user.categories.find(params[:id])
+#   puts "***********************"
+# }
+# puts "----------------------------------"
+
+# puts Benchmark.measure {
+#   puts "***********************"
+#   category = Category.find(params[:id])
+#   puts "***********************"
+# }
+# puts "----------------------------------"

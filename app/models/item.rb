@@ -10,6 +10,6 @@ class Item < ApplicationRecord
   end
 
   def rating_options
-    { item_id: self.id, user: User.first, value: 0 }
+    { item_id: self.id, user: Category.find(category_id).user, value: 0 }
   end
 end

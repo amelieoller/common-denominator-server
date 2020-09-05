@@ -3,7 +3,8 @@ class Api::V1::ItemsController < ApplicationController
 
   def index
     slug = params[:category_id].parameterize
-    category = Category.where("lower(slug) = ? and user_id = ?", slug, User.first.id).take
+    # category = current_user.categories.where("lower(slug) = ?", slug).take
+    category = Category.where("lower(slug) = ? and user_id = ?", slug, current_user.id).take
 
     if category && category.items
       render json: category.items
