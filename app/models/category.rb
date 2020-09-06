@@ -1,6 +1,6 @@
 class Category < ApplicationRecord
-  belongs_to :user
-  belongs_to :friendship, optional: true
+  belongs_to :user, optional: true
+  belongs_to :friendship, foreign_key: :custom_friendship_id, primary_key: :custom_friendship_id, optional: true
   has_many :items, dependent: :destroy
 
   validates :user, uniqueness: { scope: :title, message: "You already have a category with the same name." }

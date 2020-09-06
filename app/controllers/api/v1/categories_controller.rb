@@ -11,6 +11,16 @@ class Api::V1::CategoriesController < ApplicationController
     end
   end
 
+  def show
+    category = Category.find(params[:id])
+
+    if category
+      render json: category
+    else
+      render json: { "errors": "There was a problem fetching categories" }
+    end
+  end
+
   def create
     category = current_user.categories.build(category_params)
 
@@ -34,7 +44,7 @@ class Api::V1::CategoriesController < ApplicationController
   private
 
   def category_params
-    params.require(:category).permit(:title)
+    params.require(:category).permit(:title, :custom_friendship_id)
   end
 end
 

@@ -16,6 +16,7 @@ class CreateFriendships < ActiveRecord::Migration[6.0]
       t.references :user, index: true, foreign_key: true
       t.references :friend, index: true
       t.boolean :accepted, default: true
+      t.string :custom_friendship_id
 
       t.timestamps null: false
     end

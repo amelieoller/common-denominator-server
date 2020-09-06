@@ -4,6 +4,8 @@ Rails.application.routes.draw do
       post "/auth", to: "auth#create"
       get "/current_user", to: "auth#show"
 
+      get "/friendships/get_results/:id", to: "friendships#get_result_for_category"
+
       resources :user_friends
       resources :users, only: [:create]
       resources :friendships

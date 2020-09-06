@@ -18,11 +18,10 @@ ActiveRecord::Schema.define(version: 2020_08_30_004747) do
   create_table "categories", force: :cascade do |t|
     t.string "title"
     t.string "slug"
-    t.bigint "user_id", null: false
-    t.bigint "friendship_id"
+    t.bigint "user_id"
+    t.string "custom_friendship_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["friendship_id"], name: "index_categories_on_friendship_id"
     t.index ["user_id"], name: "index_categories_on_user_id"
   end
 
@@ -30,6 +29,7 @@ ActiveRecord::Schema.define(version: 2020_08_30_004747) do
     t.bigint "user_id"
     t.bigint "friend_id"
     t.boolean "accepted", default: true
+    t.string "custom_friendship_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["friend_id"], name: "index_friendships_on_friend_id"
@@ -59,11 +59,11 @@ ActiveRecord::Schema.define(version: 2020_08_30_004747) do
     t.string "username", null: false
     t.string "password_digest", null: false
     t.string "slug"
+    t.decimal "privilege", default: "1.0"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "categories", "friendships"
   add_foreign_key "categories", "users"
   add_foreign_key "friendships", "users"
   add_foreign_key "friendships", "users", column: "friend_id"

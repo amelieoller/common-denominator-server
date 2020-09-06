@@ -6,15 +6,15 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-a = User.create(username: "Amelie", password: "common")
-j = User.create(username: "Jeff", password: "common")
+a = User.create(username: "amelie", password: "common")
+j = User.create(username: "jeff", password: "common")
 
 f = Friendship.create(user: a, friend: j)
 
 categories = ["Meals", "Movies", "Games", "Indoor Activities"]
 
 categories.each do |category|
-  Category.create(title: category, user: a, friendship: f)
+  Category.create(title: category, user: a, custom_friendship_id: "#{a.id}_#{j.id}")
 end
 
 30.times do

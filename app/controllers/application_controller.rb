@@ -28,4 +28,11 @@ class ApplicationController < ActionController::API
   def logged_in?
     !!current_user
   end
+
+  def generate_custom_friendship_id(id1, id2)
+    lower = [id1, id2].min
+    higher = [id1, id2].max
+
+    "#{lower}_#{higher}"
+  end
 end
