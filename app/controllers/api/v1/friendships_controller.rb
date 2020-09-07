@@ -1,15 +1,28 @@
 class Api::V1::FriendshipsController < ApplicationController
   def show
     user_id = current_user.id
+
     friend_id = params[:id].to_i
 
-    custom_friendship_id = generate_custom_friendship_id(current_user.id, params[:id].to_i)
+    custom_friendship_id = generate_custom_friendship_id(user_id, params[:id].to_i)
     friendship = Friendship.where("custom_friendship_id = ?", custom_friendship_id).take
 
     if friendship
-      render json: friendship
+      render json: friendship, include: ["categories", "categories.items"]
     else
       render json: { errors: ["Error fetching friendship"] }
+    end
+  end
+
+  def update
+    friendship = Friendship.find(params[:id])
+
+    if friendship
+      friendship.update(harmony: params[:harmony], randomness: params[:randomness])
+
+      render json: friendship
+    else
+      render json: { errors: ["Error updating friendship"] }
     end
   end
 
@@ -41,9 +54,8 @@ class Api::V1::FriendshipsController < ApplicationController
     result_index = results.each_with_index.max[1]
     result_item = category.items[result_index]
 
-    # update_privilege(result_item)
-
     render json: { result: result_item }
+    # update_privilege(result_item)
   end
 
   # not working yet
@@ -53,7 +65,6 @@ class Api::V1::FriendshipsController < ApplicationController
 
     userA = ratingA.user
     userB = ratingB.user
-    byebug
 
     privilegeA = userA.privilege
     privilegeB = userB.privilege
@@ -61,15 +72,13 @@ class Api::V1::FriendshipsController < ApplicationController
     voteA = ratingA.value
     voteB = ratingB.value
 
-    newPrivilegeA = ((privilegeA * (voteA - voteB)) / 5) + 1
-    newPrivilegeB = ((privilegeB * (voteB - voteA)) / 5) + 1
+    newPrivilegeA = privilegeA * ((voteB - voteA) / 10)
+    newPrivilegeB = privilegeB * ((voteA - voteB) / 10)
 
-    # userA.privilege = newPrivilegeA
-    # userB.privilege = newPrivilegeB
-    # userB.privilege = newPrivilegeB
-    puts privilegeA
-    puts privilegeB
-    puts userA.privilege
-    puts userB.privilege
+    userA.update(privilege: newPrivilegeA)
+    userB.update(privilege: newPrivilegeB)
+
+    puts "AAAAA Vote: #{voteA}, Before P: #{privilegeA}, After P: #{userA.privilege}"
+    puts "BBBBB Vote: #{voteB}, Before P: #{privilegeB}, After P: #{userB.privilege}"
   end
 end

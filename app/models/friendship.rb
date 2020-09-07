@@ -6,6 +6,20 @@ class Friendship < ApplicationRecord
   after_create :create_inverse, unless: :has_inverse?
   after_destroy :destroy_inverses, if: :has_inverse?
   before_create :add_custom_friendship_id
+  after_update :update_inverse, unless: :inverse_has_been_updated?
+
+  # validates :value, harmony: { greater_than_or_equal_to: 0, less_than_or_equal_to: 2 }
+  # validates :value, randomness: { greater_than_or_equal_to: 0, less_than_or_equal_to: 5 }
+
+  def update_inverse
+    inverse_friendship = self.class.where(inverse_match_options).take
+    inverse_friendship.update(inverse_match_options.merge({ harmony: harmony, randomness: randomness }))
+  end
+
+  def inverse_has_been_updated?
+    inverse_friendship = self.class.where(inverse_match_options).take
+    inverse_friendship.harmony == harmony && inverse_friendship.randomness == randomness
+  end
 
   def add_custom_friendship_id
     lower = [self.user.id, self.friend.id].min
