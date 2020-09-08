@@ -22,8 +22,9 @@ class Api::V1::CategoriesController < ApplicationController
   end
 
   def create
-    category = current_user.categories.build(category_params)
-
+    # category = current_user.categories.build(category_params)
+    category = Category.create(category_params)
+    byebug
     if category.save
       render json: category
     else
@@ -32,7 +33,7 @@ class Api::V1::CategoriesController < ApplicationController
   end
 
   def destroy
-    category = current_user.categories.find(params[:id])
+    category = Category.find(params[:id])
 
     if category.destroy
       render json: { "message": "Successfully removed category" }
@@ -44,7 +45,7 @@ class Api::V1::CategoriesController < ApplicationController
   private
 
   def category_params
-    params.require(:category).permit(:title, :custom_friendship_id)
+    params.require(:category).permit(:title, :custom_friendship_id, :user_id)
   end
 end
 

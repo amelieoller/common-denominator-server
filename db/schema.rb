@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 2020_09_07_020212) do
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "harmony", default: "0.75"
     t.decimal "randomness", default: "5.0"
+    t.integer "vetoes", default: 2
     t.index ["friend_id"], name: "index_friendships_on_friend_id"
     t.index ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
     t.index ["user_id"], name: "index_friendships_on_user_id"
